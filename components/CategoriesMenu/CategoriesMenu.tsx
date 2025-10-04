@@ -4,7 +4,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Category } from "@/lib/api";
+import { Category } from "@/types/note";
 import css from "./CategoriesMenu.module.css";
 
 type Props = {

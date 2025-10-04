@@ -1,13 +1,13 @@
 // app/notes/[id]/NoteDetails.client.tsx
-
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { getSingleNote } from "@/lib/api";
 
 const NoteDetailsClient = () => {
   const { id } = useParams<{ id: string }>();
+  const router = useRouter();
 
   const {
     data: note,
@@ -19,8 +19,14 @@ const NoteDetailsClient = () => {
     refetchOnMount: false,
   });
 
-  if (isLoading) return <p>Loading...</p>;
+  const handleGoBack = () => {
+    const isSure = confirm("Are you sure you want to go back?");
+    if (isSure) {
+      router.back();
+    }
+  };
 
+  if (isLoading) return <p>Loading...</p>;
   if (error || !note) return <p>Some error..</p>;
 
   const formattedDate = note.updatedAt
@@ -29,6 +35,7 @@ const NoteDetailsClient = () => {
 
   return (
     <div>
+      <button onClick={handleGoBack}>Back</button>
       <h2>{note.title}</h2>
       <p>{note.content}</p>
       <p>{formattedDate}</p>

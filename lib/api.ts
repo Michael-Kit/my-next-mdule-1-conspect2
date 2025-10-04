@@ -1,26 +1,20 @@
 // lib/api.ts
-import { Note } from "@/types/note";
+import { Note, Category } from "@/types/note";
 import axios from "axios";
 
-const BASE_URL = "https://notehub-public.goit.study/api";
-const token = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
-console.log("TOKEN:", token);
-const instance = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-});
+axios.defaults.baseURL = "https://next-docs-9f0504b0a741.herokuapp.com";
 
 interface NoteListResponse {
   notes: Note[];
   total: number;
 }
-export const getNotes = async (
-  categoryId?: string,
-): Promise<NoteListResponse> => {
-  const res = await instance.get<NoteListResponse>("/notes", {
-    params: categoryId ? { categoryId } : {},
+// const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// lib/api.ts
+
+export const getNotes = async (categoryId?: string) => {
+  const res = await axios.get<NoteListResponse>("/notes", {
+    params: { categoryId },
   });
   return res.data;
 };
@@ -29,20 +23,8 @@ export const getSingleNote = async (id: string) => {
   const res = await axios.get<Note>(`/notes/${id}`);
   return res.data;
 };
-// lib/api.ts
-export type Category = {
-  id: string;
-  name: string;
-};
 
-export const categories: Category[] = [
-  { id: "todo", name: "Todo" },
-  { id: "work", name: "Work" },
-  { id: "personal", name: "Personal" },
-  { id: "meeting", name: "Meeting" },
-  { id: "shopping", name: "Shopping" },
-];
-
-export const getCategories = async (): Promise<Category[]> => {
-  return Promise.resolve(categories);
+export const getCategories = async () => {
+  const res = await axios<Category[]>("/categories");
+  return res.data;
 };

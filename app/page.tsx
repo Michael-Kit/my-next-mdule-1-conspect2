@@ -5,6 +5,7 @@ export default function Home() {
     <>
       <div>
         <h2 className={css.header}>Welcome to Home</h2>
+        <p className={css.text}>This is the home page.</p>
       </div>
     </>
   );
